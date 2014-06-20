@@ -17,6 +17,11 @@ def main():
             print(count)
 
     print("Vocabulary Size: %d" % len(words))
+    f = open("distinct_words.txt","w")
+    for w in words:
+        f.write("%s\n" % str(w.encode('utf-8')))
+    f.close()
+    print("Done\n")
 if __name__ == '__main__':
     try:
         main()
