@@ -9,7 +9,7 @@ from time import time
 import scipy.io as sio
 from sklearn.preprocessing import LabelEncoder
 from sklearn.mixture import GMM
-from sklearn.preprocessing import Imputer
+# from sklearn.preprocessing import Imputer
 # from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
 from copy import deepcopy
@@ -77,9 +77,9 @@ class Learner:
 
 def main():
     # Read all data
-    essays = pd.read_csv(open('../../dataset/essays.csv', 'r'))
-    projects = pd.read_csv(open('../../dataset/projects.csv', 'r'))
-    outcomes = pd.read_csv(open('../../dataset/outcomes.csv', 'r'))
+    essays = pd.read_csv(open('../essays.csv', 'r'))
+    projects = pd.read_csv(open('../projects.csv', 'r'))
+    outcomes = pd.read_csv(open('../outcomes.csv', 'r'))
 
     essays_c = essays[['projectid', 'title', 'essay']].sort(column='projectid')
     projects_c = projects[['projectid', 'date_posted']].sort(column='projectid')
@@ -164,16 +164,18 @@ def main():
 
     # logit_params = {'penalty': 'l2', 'dual': False, 'tol': 0.0001, 'C': 1.0, 'fit_intercept': True, 'intercept_scaling': 1, 'class_weight': None, 'random_state': None}
     linearsvc_params = {'penalty': 'l2', 'loss': 'l2', 'dual': True, 'tol': 0.0001, 'C': 1.0, 'multi_class': 'ovr', 'fit_intercept': True, 'intercept_scaling': 1, 'class_weight': None,
-'verbose':2, 'random_state':None}
+'verbose': 2, 'random_state': None}
     M = Learner(FV, labels)
     # P = M.fit_and_predict(train_idx, test_idx, LogisticRegression(), params=logit_params)
     P = M.fit_and_predict(train_idx, test_idx, LinearSVC(), params=linearsvc_params)
 
     ofile = open('word_embed_logit.csv', 'w')
     ofile.write("projectid,is_exciting\n")
+    k = 0
     for i in test_idx:
             # ofile.write("%s,%f\n" % (epo.iloc[i]['projectid'], P[i][1]))
-            ofile.write("%s,%f\n" % (epo.iloc[i]['projectid'], P[i]))
+            ofile.write("%s,%f\n" % (epo.iloc[i]['projectid'], P[k]))
+            k = k + 1
     ofile.close()
 
 
